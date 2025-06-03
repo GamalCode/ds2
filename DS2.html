@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PL/SQL - Studijní materiály</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-left: 5px solid #667eea;
+        }
+
+        .toc h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .toc ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 10px;
+        }
+
+        .toc li {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .toc li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .toc a {
+            color: #495057;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc a:hover {
+            color: #667eea;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            scroll-margin-top: 100px;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .section h3 {
+            color: #34495e;
+            font-size: 1.4rem;
+            margin: 25px 0 15px 0;
+            padding-left: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h4 {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .comparison-table tr:hover {
+            background-color: #e3f2fd;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #f39c12;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #dc3545;
+            margin: 20px 0;
+        }
+
+        .info {
+            background: linear-gradient(135deg, #d1ecf1, #b8daff);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #17a2b8;
+            margin: 20px 0;
+        }
+
+        .questions {
+            background: linear-gradient(135deg, #e2e3e5, #d6d8db);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #6c757d;
+        }
+
+        .questions h4 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .advantages, .disadvantages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .advantages > div, .disadvantages > div {
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .advantages > div {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            border-left: 4px solid #28a745;
+        }
+
+        .disadvantages > div {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            border-left: 4px solid #dc3545;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .toc ul {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PL/SQL a Databázové systémy</h1>
+            <p>Kompletní studijní materiály - přeloženo ze slovenštiny</p>
+        </div>
+
+        <div class="content">
+            <div class="toc">
+                <h2>📚 Obsah</h2>
+                <ul>
+                    <li><a href="#uvod">01 - Úvod, SQL (Oracle vs SQL Server)</a></li>
+                    <li><a href="#plsql1">02 - PL/SQL 1 (blok, proměnné, výjimky)</a></li>
+                    <li><a href="#plsql2">03 - PL/SQL 2 (procedury, triggery)</a></li>
+                    <li><a href="#plsql3">04 - PL/SQL 3 (řídicí konstrukce, kurzory)</a></li>
+                    <li><a href="#plsql4">05 - PL/SQL 4 (dynamické SQL)</a></li>
+                    <li><a href="#ordm">06 - Objektově-relační datový model</a></li>
+                    <li><a href="#analyza">07 - Funkční analýza</a></li>
+                    <li><a href="#transakce">08 - Transakce a zotavení</a></li>
+                    <li><a href="#orm">09 - Objektově-relační mapování</a></li>
+                    <li><a href="#dotazy">10 - Vykonávání dotazů v DBS</a></li>
+                    <li><a href="#rizeni1">11 - Řízení souběhu I & II</a></li>
+                </ul>
+            </div>
+
+            <section id="uvod" class="section">
+                <h2>01 - Úvod, SQL (Oracle vs SQL Server)</h2>
+                
+                <h3>Základní rozdíly mezi Oracle a SQL Server</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Operace</th>
+                            <th>Oracle</th>
+                            <th>SQL Server</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Délka řetězce</td>
+                            <td><code>length</code></td>
+                            <td><code>len</code></td>
+                        </tr>
+                        <tr>
+                            <td>Podřetězec</td>
+                            <td><code>substr</code></td>
+                            <td><code>substring</code></td>
+                        </tr>
+                        <tr>
+                            <td>Konkatenace</td>
+                            <td><code>||</code></td>
+                            <td><code>+</code></td>
+                        </tr>
+                        <tr>
+                            <td>Zbytek po celočíselném dělení</td>
+                            <td><code>mod(12,3)</code></td>
+                            <td><code>12 % 3</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Práce s daty</h3>
+                <p>V Oracle máme funkci <code>to_date</code> se dvěma parametry, kde první představuje řetězec s datem a druhý obsahuje formátovací řetězec, například:</p>
+                <div class="code-block">to_date('2021-02-15', 'YYYY-MM-DD')</div>
+
+                <p><strong>Získání roku / měsíce / dne z data:</strong></p>
+                <ul>
+                    <li>V SQL Server: <code>year(payment_date)</code></li>
+                    <li>V Oracle: <code>extract(year from payment_date)</code></li>
+                </ul>
+
+                <p><strong>Aktuální datum a čas (nejpoužívanější je SYSDATE):</strong></p>
+                <ul>
+                    <li><code>sysdate, systemtimestamp</code> - datum a čas na serveru</li>
+                    <li><code>current_date, current_timestamp</code> - datum a čas na klientovi</li>
+                </ul>
+
+                <h3>Automatické generování primárního klíče</h3>
+                <div class="info">
+                    <p><strong>generated always as identity:</strong> Při vkládání do tabulky s takto definovaným id nebudeme moci vložit vlastní klíč pomocí INSERT INTO...VALUES</p>
+                </div>
+                <div class="info">
+                    <p><strong>generated by default as identity:</strong> Při vkládání už můžeme vložit i vlastní klíč, ale po prvním vložení vlastního už musíme vkládat jen vlastní</p>
+                    <p><strong>ALTER TABLE ... MODIFY</strong> Umožňuje spuštění auto incrementu zpátky</p>
+                </div>
+            </section>
+
+            <section id="plsql1" class="section">
+                <h2>02 - PL/SQL 1 (blok, proměnné, výjimky)</h2>
+                
+                <p>Jedná se o procedurální rozšíření SQL (syntax založená na jazyku ADA)</p>
+
+                <div class="advantages">
+                    <div>
+                        <h4>✅ Výhody psaní kódu v PL/SQL</h4>
+                        <ul>
+                            <li>Kombinace procedurální logiky a SQL</li>
+                            <li>Méně přenášených dat → vyšší propustnost</li>
+                            <li>Sdílení kódu mezi aplikacemi</li>
+                            <li>Nezávislost na platformě</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="disadvantages">
+                    <div>
+                        <h4>❌ Nevýhody</h4>
+                        <ul>
+                            <li>Nepřenositelnost aplikace mezi různými DBS</li>
+                            <li>Možnost vyhnout se komplikovanějších SQL příkazu → dopad na efektivitu</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Základní struktura PL/SQL bloku</h3>
+                <div class="code-block"><pre>
+DECLARE  -- nepovinná deklarace lokálních proměnných
+BEGIN    -- povinné otevření bloku příkazu
+EXCEPTION -- nepovinné zachytávání výjimek
+END      -- povinné ukončení bloku
+                </pre></div>
+
+                <h3>Proměnné</h3>
+                <ul>
+                    <li>Obvykle dáváme prefix <code>v_</code></li>
+                    <li>Hodnotu přiřazujeme pomocí <code>v_age := 20</code></li>
+                    <li><code>SELECT vek INTO v_vek FROM...WHERE...</code></li>
+                </ul>
+
+                <div class="warning">
+                    <p><strong>POZOR:</strong> SELECT INTO musí vracet jen 1 záznam, jinak výjimka TOO_MANY_ROWS nebo NO_DATA_FOUND</p>
+                </div>
+
+                <h4>Operátor %TYPE</h4>
+                <p>Kopíruje datový typ atributů tabulky (abychom po změně typu atributu nemuseli měnit kód)</p>
+                <div class="code-block">v_login Student.login%TYPE</div>
+
+                <h4>Operátor %ROWTYPE</h4>
+                <p>Strukturovaný datový typ - jeho instance reprezentuje 1 záznam z tabulky</p>
+                <div class="code-block">v_student Student%ROWTYPE</div>
+
+                <h3>Výjimky</h3>
+                <div class="code-block"><pre>
+BEGIN
+...
+EXCEPTION
+    WHEN nazev_vyjimky THEN
+        spracovani_vyjimky
+END;
+                </pre></div>
+                
+                <div class="info">
+                    <p><strong>EXCEPTION</strong>  DBS hledá typ výjimky a při úspěšném zpracování se chyba dále nešiří</p>
+                    <p><strong>WHEN OTHERS THEN</strong> Skočí se do této sekce a výjimka se zpracuje</p>
+                </div>
+
+                <p><strong>Příklady výjimek:</strong></p>
+                <ul>
+                    <li><code>DUP_VAL_ON_INDEX</code> - pokus o vložení duplicitní hodnoty</li>
+                    <li><code>NO_DATA_FOUND</code> - SELECT INTO nevrátil data</li>
+                    <li><code>TOO_MANY_ROWS</code> - SELECT INTO vrátil více než jeden řádek</li>
+                </ul>
+            </section>
+
+            <section id="plsql2" class="section">
+                <h2>03 - PL/SQL 2 (procedury, triggery)</h2>
+
+                <h3>Anonymní vs Pojmenované procedury</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Typ</th>
+                            <th>Vlastnosti</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Anonymní</td>
+                            <td>Nemohou být volané z jiné procedury, nejsou předkompilovány (pomalejší)</td>
+                        </tr>
+                        <tr>
+                            <td>Pojmenované</td>
+                            <td>Mohou být volané z jiné procedury, jsou předkompilovány (rychlejší)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Vytvoření procedury</h3>
+                <div class="code-block"><pre>
+CREATE OR REPLACE PROCEDURE jmeno_procedury (age IN int, ...)
+AS ... definice lokálních proměnných;
+BEGIN ... tělo procedury;
+END jmeno_procedury;
+                </pre></div>
+
+                <div class="info">
+                    <p><strong>Parametry mohou být v módech:</strong> IN, OUT, IN OUT</p>
+                    <p><strong>EXECUTE jmeno_procedury(20);</strong></p>
+                </div>
+
+                <div class="warning">
+                    <p><strong>POZOR:</strong> Kompilace ≠ spuštění procedury! Při úspešné kompilaci je uložena do DB</p>
+                </div>
+
+                <h3>Funkce</h3>
+                <p>Podobné procedurám, ale specifikují návratový typ a musí vracet hodnotu</p>
+                <div class="code-block">
+                    <pre>
+CREATE OR REPLACE FUNCTION jmeno_funkce (age IN int, ...)
+RETURN datovy_typ_navratove_hodnoty
+AS ... definice lokálních proměnných;
+BEGIN ... tělo funkce;
+END jmeno_funkce;
+                </pre></div>
+                
+                <div class="info">
+                    <p><strong>EXECUTE DBMS_OUTPUT.PUT_LINE(jmeno_funkce(20));</strong></p>
+                    <p>Volání v anonymním bloků<p>
+                    <p><strong>SELECT jmeno_funkce(20) FROM DUAL;</strong></p>
+                </div>
+
+                <h3>Triggery</h3>
+                <p>PL/SQL blok spuštěný automaticky při příkazech JMD (INSERT, UPDATE, DELETE)</p>
+                <div class="code-block"><pre>
+CREATE OR REPLACE TRIGGER jmeno_triggeru
+{BEFORE | AFTER | INSTEAD OF}
+{INSERT [OR] | UPDATE [OR] | DELETE}
+[OF jmeno_atributu]
+ON jmeno_tabulky
+[REFERENCING OLD AS stara_hodnota NEW AS nova_hodnota]
+[FOR EACH ROW [WHEN (podminka)]]
+BEGIN ... tělo triggeru
+END;
+                </pre></div>
+
+                <div class="highlight">
+                    <p><strong>FOR EACH ROW:</strong> Trigger se spustí pro každý záznam, který je SQL příkazem aktualizován</p>
+                </div>
+
+                <h3>Mutující tabulky</h3>
+                <div class="warning">
+                    <p>Vzniká, když se pokusíme v triggeru číst/modifikovat stejnou tabulku, pro kterou je trigger definován</p>
+                </div>
+            </section>
+
+            <section id="plsql3" class="section">
+                <h2>04 - PL/SQL 3 (řídicí konstrukce, kurzory)</h2>
+
+                <h3>Řídicí konstrukce</h3>
+                <div class="code-block">
+                    <pre>
+-- Podmínky
+IF podminka1 THEN prikazy 
+ELSIF podminka2 THEN prikazy 
+ELSE prikazy 
+END IF
+
+-- Case
+CASE WHEN INSERTING | UPDATING | DELETING THEN prikazy END CASE
+                </pre></div>
+
+                <div class="info">
+                    <p><strong>Tip:</strong> Pro porovnání ≠ v PL/SQL používáme <code>&lt;&gt;</code></p>
+                </div>
+
+                <h3>Cykly</h3>
+                <div class="code-block"><pre>
+-- Základní cyklus
+LOOP
+    prikazy
+    [EXIT; | EXIT WHEN podminka;]
+END LOOP;
+
+-- While cyklus
+WHILE podminka LOOP
+    prikazy
+END LOOP;
+
+-- For cyklus
+FOR jmeno_promenne IN [REVERSE] val1 .. val2
+LOOP
+    prikazy
+END LOOP;
+                </pre></div>
+
+                <h3>Kurzory</h3>
+                <p>Pomocné proměnné pro procházení výsledků SQL dotazů</p>
+
+                <h4>Typy kursorů</h4>
+                <ul>
+                    <li><strong>Implicitní:</strong> Vytváří se automaticky po vykonání (INSERT, DELETE, UPDATE)</li>
+                    <li><strong>Explicitní:</strong> Deklarujeme ručně (často s SELECT)</li>
+                </ul>
+
+                <h4>Operace s kurzory</h4>
+                <ul>
+                    <li><code>OPEN nazev_kurzoru</code> - otevře kurzor</li>
+                    <li><code>FETCH nazev_kurzoru INTO promenna</code> - načte záznam</li>
+                    <li><code>CLOSE nazev_kurzoru</code> - uzavře kurzor</li>
+                </ul>
+
+                <h4>Nejpoužívanější verze - FOR kurzor</h4>
+                <div class="code-block"><pre>
+DECLARE
+    v_surname Student.surname%TYPE;
+BEGIN
+    FOR jeden_zaznam IN (SELECT surname FROM Student)
+    LOOP
+        v_surname := jeden_zaznam.surname;
+    END LOOP;
+END;
+                </pre></div>
+
+                <div class="highlight">
+                    <p><strong>Doporučení:</strong> Je lepší využít jednu operaci místo kurzoru (minimalizujeme počet operací → rychlejší vykonání)</p>
+                </div>
+            </section>
+
+            <section id="plsql4" class="section">
+                <h2>05 - PL/SQL 4 (dynamické SQL)</h2>
+
+                <h3>Kdy použít dynamické SQL</h3>
+
+                <div class="info">
+                    <p><strong>Pravidlo:</strong> Dynamické používáme jen v případě, kdy není možné použít statické!</p>
+                </div>
+
+                <p>Některé příkazy nemůžeme volat přímo v PL/SQL bloku:</p>
+                <ul>
+                    <li>Všechny příkazy JDD</li>
+                    <li>Příkazy, které v době překladu nejsou známy</li>
+                </ul>
+
+                <div class="warning">
+                    <p><strong>Nevýhody dynamického SQL:</strong></p>
+                    <ul>
+                        <li>Nedá se ověřit syntaktická správnost při kompilaci</li>
+                        <li>Vystavujeme se nebezpečnosti SQL injection</li>
+                    </ul>
+                </div>
+
+                <h3>Spuštění dynamického SQL</h3>
+                <div class="code-block">EXECUTE IMMEDIATE v_sql_command;</div>
+
+                <h3>Vázané proměnné</h3>
+                <p>Zabraňují SQL INJECTION a zlepšují výkon</p>
+                <div class="code-block"><pre>
+v_sql := 'INSERT INTO reward (id, student_login, ' || p_rewardType || '_reward) VALUES (:1, :2, :3)';
+EXECUTE IMMEDIATE v_sql USING v_id, p_login, p_reward;
+-- hodnoty :1, :2 a :3 se nahradí proměnnými v pořadí za USING
+                </pre></div>
+
+                <h3>SQL Injection</h3>
+                <div class="warning">
+                    <p><strong>Bezpečnostní útok</strong> - text od uživatele použitý k manipulaci databázových operací</p>
+                </div>
+
+                <p><strong>Příklad útoku:</strong></p>
+                <div class="code-block"><pre>
+-- Útočník zadá: 'X' or 1 = 1 --
+-- Výsledek:
+SELECT fname, lname, salary
+FROM employees
+WHERE fname='X' or 1=1 --'
+-- útočník má přístup k datům
+                </pre></div>
+
+                <h4>Jak se bránit:</h4>
+                <ul>
+                    <li>Používat jen statické dotazy</li>
+                    <li>V dynamických dotazech používat vázané proměnné</li>
+                    <li>Kontrolovat nebezpečné znaky</li>
+                </ul>
+
+                <div class="code-block"><pre>
+-- ❌ NEPOUŽÍVAT
+'SELECT * FROM people WHERE fname = ''' || p_fname ''' ';
+
+-- ✅ POUŽÍVAT
+'SELECT * FROM people WHERE fname = ':1 ';
+                </pre></div>
+            </section>
+
+            <section id="ordm" class="section">
+                <h2>06 - Objektově-relační datový model</h2>
+
+                <p>ORDM = objektově-relační datový model (v podstatě rysy OOP v DBS)</p>
+
+                <h3>Používané vs Nepoužívané rysy</h3>
+                <div class="advantages">
+                    <div>
+                        <h4>✅ Používané rysy ORDM</h4>
+                        <ul>
+                            <li>Objektové typy jako datové typy atributů</li>
+                            <li>Kolekce</li>
+                            <li>Kód uložený a spouštěný v DBS</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="disadvantages">
+                    <div>
+                        <h4>❌ Nepoužívané rysy ORDM</h4>
+                        <ul>
+                            <li>Objektové tabulky</li>
+                            <li>Objekty, metody</li>
+                            <li>Reference na objekty</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Kolekce</h3>
+                <p>Používáme v procedurách místo perzistentních tabulek (mají menší režii)</p>
+                <ul>
+                    <li><strong>Pole (varray):</strong> pole pevné délky, přímý přístup k prvkům</li>
+                    <li><strong>Paměťová buňka (nested table):</strong> pole proměnné délky</li>
+                    <li><strong>Asociativní pole:</strong> obdoba hash table</li>
+                </ul>
+
+                <h3>Hromadné SQL operace</h3>
+                <p>Efektivnější než vkládání po jednom záznamu</p>
+                <ul>
+                    <li><code>BULK COLLECT</code> - načte více záznamů do paměťového pole</li>
+                    <li><code>FORALL</code> - zapíše z paměťového pole do DB</li>
+                </ul>
+
+                <h3>Pomocné tabulky</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Databáze</th>
+                            <th>Typ</th>
+                            <th>Popis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="2">Oracle</td>
+                            <td>Local temporary</td>
+                            <td>CREATE GLOBAL TEMPORARY TABLE...</td>
+                        </tr>
+                        <tr>
+                            <td>Global temporary</td>
+                            <td>CREATE PRIVATE TEMPORARY TABLE...</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="4">SQL Server</td>
+                            <td>Local temporary</td>
+                            <td>#table_name</td>
+                        </tr>
+                        <tr>
+                            <td>Global temporary</td>
+                            <td>##table_name</td>
+                        </tr>
+                        <tr>
+                            <td>Table variables</td>
+                            <td>@table_name</td>
+                        </tr>
+                        <tr>
+                            <td>Persistent temporary</td>
+                            <td>TempDB table_name</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="analyza" class="section">
+                <h2>07 - Funkční analýza</h2>
+
+                <h3>Typy funkcí</h3>
+                <ul>
+                    <li><strong>CRUD operace</strong> nad jednou tabulkou</li>
+                    <li><strong>Komplikovaný dotaz</strong></li>
+                    <li><strong>Transakce</strong></li>
+                </ul>
+
+                <p>Funkční analýza je souhrn funkcí datové vrstvy. CRUD nepopisujeme (jen uvedeme v seznamu), komplikované dotazy a transakce popisujeme minispecifikací.</p>
+
+                <div class="warning">
+                    <p><strong>Analysis-paralysis:</strong> Když je analýza delší než samotná implementace funkce</p>
+                </div>
+
+                <h3>Příklad minispecifikace transakce</h3>
+                <div class="highlight">
+                    <h4>Transakce AddMatch</h4>
+                    <p><strong>Vstupy:</strong></p>
+                    <ul>
+                        <li>p_tournament - ID turnaje</li>
+                        <li>p_map - ID mapy</li>
+                        <li>p_teamA, p_teamB - ID týmů</li>
+                        <li>p_winner - ID vítězného týmu</li>
+                        <li>p_date - datum zápasu (může být NULL)</li>
+                    </ul>
+                    <p><strong>Výstup:</strong> TRUE při úspěchu, FALSE při chybě + ROLLBACK</p>
+                </div>
+            </section>
+
+            <section id="transakce" class="section">
+                <h2>08 - Transakce a zotavení</h2>
+
+                <h3>Co je transakce</h3>
+                <p>Databázová operace obsahující více elementárních operací, která je <strong>nedělitelná a atomická</strong></p>
+
+                <div class="code-block"><pre>
+BEGIN TRANSACTION
+-- databázové operace
+COMMIT    -- nebo ROLLBACK
+                </pre></div>
+
+                <h3>ACID vlastnosti</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Vlastnost</th>
+                            <th>Popis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Atomicity</strong></td>
+                            <td>Jsou vykonány všechny operace nebo ani jedna</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Correctness</strong></td>
+                            <td>Převádí korektní stav DB do jiného korektního stavu</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Isolation</strong></td>
+                            <td>Transakce jsou navzájem izolované</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Durability</strong></td>
+                            <td>Změny jsou trvalé i po globální chybě</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Log soubor</h3>
+                <p>Pro podporu transakcí používá DBS log soubor na disku se záznamy o všech operacích</p>
+
+                <div class="info">
+                    <p><strong>Pravidlo dopředného zápisu:</strong> Všechny aktualizace musí být zapsány do logu před zápisem do DB</p>
+                </div>
+
+                <h3>Výhody logu</h3>
+                <ul>
+                    <li><strong>Zápis do logu:</strong> sekvenční, stovky MB/s</li>
+                    <li><strong>Zápis do DB:</strong> náhodné diskové operace, desítky MB/s</li>
+                </ul>
+
+                <h3>Operace při zotavení</h3>
+                <ul>
+                    <li><strong>UNDO:</strong> Zrušení transakce přerušené chybou</li>
+                    <li><strong>REDO:</strong> Přepracování úspešně dokončené transakce</li>
+                </ul>
+
+                <h3>Techniky zotavení</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Technika</th>
+                            <th>Charakteristika</th>
+                            <th>Operace při zotavení</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Odložená aktualizace</td>
+                            <td>Zápis až po COMMIT</td>
+                            <td>NO-UNDO / REDO</td>
+                        </tr>
+                        <tr>
+                            <td>Okamžitá aktualizace</td>
+                            <td>Zápis ihned</td>
+                            <td>UNDO / NO-REDO</td>
+                        </tr>
+                        <tr>
+                            <td>Kombinovaná</td>
+                            <td>Oba přístupy</td>
+                            <td>UNDO / REDO</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Checkpoint (kontrolní bod)</h3>
+                <p>Periodické body pro optimalizaci zotavení - systém ví, které operace musí vykonat</p>
+
+                <h3>Algoritmus zotavení</h3>
+                <ol>
+                    <li>Vytvoření seznamů UNDO a REDO</li>
+                    <li>Procházení logu od posledního checkpointu</li>
+                    <li>UNDO operace pro nepotvrzené transakce</li>
+                    <li>REDO operace pro potvrzené transakce</li>
+                </ol>
+
+                <h3>Truncate vs Delete</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Operace</th>
+                            <th>Rychlost</th>
+                            <th>Zotavitelnost</th>
+                            <th>Log</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>TRUNCATE</td>
+                            <td>Rychlá</td>
+                            <td>Definitivní</td>
+                            <td>Nezapisuje</td>
+                        </tr>
+                        <tr>
+                            <td>DELETE</td>
+                            <td>Pomalá</td>
+                            <td>Obnovitelná</td>
+                            <td>Zapisuje</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Savepoints</h3>
+                <p>Záchranné body umožňují rozdělit transakci na menší části bez ztráty atomicity</p>
+            </section>
+
+            <section id="orm" class="section">
+                <h2>09 - Objektově-relační mapování</h2>
+
+                <p>Více způsobů implementace datové vrstvy - ORM je jedním z nich</p>
+
+                <h3>Vlastnosti ORM</h3>
+                <div class="advantages">
+                    <div>
+                        <h4>✅ Výhody</h4>
+                        <ul>
+                            <li>Práce s objektovým modelem</li>
+                            <li>Rychlejší vytváření aplikací</li>
+                            <li>Přenositelnost mezi DBS</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="disadvantages">
+                    <div>
+                        <h4>❌ Nevýhody</h4>
+                        <ul>
+                            <li>Menší výkon aplikace</li>
+                            <li>Částečná kontrola nad SQL</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Techniky implementace</h3>
+                <ul>
+                    <li><strong>ORM rámce:</strong> Hibernate, JPA</li>
+                    <li><strong>ORM mikrorámce</strong></li>
+                    <li><strong>Vlastní implementace:</strong> nejlepší propustnost</li>
+                </ul>
+
+                <h3>Jednoduché mapování</h3>
+                <ul>
+                    <li><strong>1 třída = 1 entitní typ</strong> (DTO - Data Transfer Object)</li>
+                    <li><strong>1 třída = implementace funkcí nad tabulkou</strong> (DAO - Data Access Object)</li>
+                    <li><strong>Pomocné třídy:</strong> Database, Connection</li>
+                </ul>
+
+                <h3>Příklad DTO v Javě</h3>
+                <div class="code-block"><pre>
+public class Map {
+    public int map_id;
+    public String name;
+}
+                </pre></div>
+
+                <h3>Vazby v ORM</h3>
+                <h4>1:1 vztah</h4>
+                <div class="code-block"><pre>
+public class User {
+    private int user_id;
+    private String fname;
+    private String lname;
+    private int account_id;
+    // private Account account - možné, ale negativní dopad na výkon
+}
+                </pre></div>
+
+                <h4>1:N vztah</h4>
+                <div class="code-block"><pre>
+public class Map {
+    private int map_id;
+    private String name;
+    private List&lt;Match&gt; matches = new ArrayList&lt;Match&gt;();
+}
+                </pre></div>
+            </section>
+
+            <section id="dotazy" class="section">
+                <h2>10 - Vykonávání dotazů v DBS</h2>
+
+                <h3>Heap table (halda)</h3>
+                <p>Základní úložiště pro tabulku - organizováno jako stránkové pole</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Operace</th>
+                            <th>Složitost</th>
+                            <th>Poznámka</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Vyhledávání</td>
+                            <td>O(n)</td>
+                            <td>Sekvenční průchod všemi stránkami</td>
+                        </tr>
+                        <tr>
+                            <td>Mazání</td>
+                            <td>O(n)</td>
+                            <td>Označení jako smazáno, ne fyzické vymazání</td>
+                        </tr>
+                        <tr>
+                            <td>Vkládání na konec</td>
+                            <td>O(1)</td>
+                            <td>Nejrychlejší varianta</td>
+                        </tr>
+                        <tr>
+                            <td>Kontrola jedinečnosti</td>
+                            <td>O(n)</td>
+                            <td>Bez indexu</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Plán vykonávání dotazu</h3>
+                <ol>
+                    <li><strong>Optimalizátor</strong> vygeneruje více plánů</li>
+                    <li><strong>Výběr</strong> nejlevnějšího podle IO/CPU cost</li>
+                    <li><strong>Reprezentace</strong> stromovou strukturou</li>
+                </ol>
+
+                <h3>B+ strom index</h3>
+                <p>Manuálně vytvářený pro dotazy s vysokou selektivitou</p>
+
+                <div class="code-block">CREATE INDEX idx_name ON table_name (column_list)</div>
+
+                <h4>Vlastnosti B+ stromu</h4>
+                <ul>
+                    <li>Vyvážený, stránkovatelný</li>
+                    <li>Klíče jen v listových uzlech</li>
+                    <li>Složitost operací: O(log<sub>c</sub> n)</li>
+                    <li>Využití uzlů ≥ 50%</li>
+                </ul>
+
+                <h3>Typy dotazů v B-stromu</h3>
+                <ul>
+                    <li><strong>Bodový dotaz:</strong> IO cost = výška stromu + 2</li>
+                    <li><strong>Rozsahový dotaz:</strong> Skenování listových uzlů</li>
+                </ul>
+
+                <h3>Složený index</h3>
+                <div class="code-block">CREATE INDEX idx_user ON users (login, lname, department);</div>
+
+                <p>Klíče seřazeny lexikograficky podle pořadí v definici</p>
+
+                <h4>Kdy index využije:</h4>
+                <ul>
+                    <li>✅ Dotaz obsahuje první atribut (login)</li>
+                    <li>✅ Dotaz používá všechny atributy</li>
+                </ul>
+
+                <h4>Kdy index nevyužije:</h4>
+                <ul>
+                    <li>❌ Chybí první atribut v WHERE klauzuli</li>
+                    <li>❌ Nízká selektivita dotazu</li>
+                </ul>
+
+                <h3>Operace v plánu vykonávání</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Oracle</th>
+                            <th>SQL Server</th>
+                            <th>Popis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>TABLE ACCESS (FULL)</td>
+                            <td>TABLE SCAN</td>
+                            <td>Sekvenční průchod haldou</td>
+                        </tr>
+                        <tr>
+                            <td>TABLE ACCESS (BY INDEX ROWID)</td>
+                            <td>RID LOOKUP</td>
+                            <td>Přístup do haldy pomocí ROWID</td>
+                        </tr>
+                        <tr>
+                            <td>INDEX (UNIQUE SCAN)</td>
+                            <td rowspan="2">INDEX SEEK()</td>
+                            <td>Bodový dotaz v B+ stromu</td>
+                        </tr>
+                        <tr>
+                            <td>INDEX (RANGE SCAN)</td>
+                            <td>Rozsahový dotaz v B+ stromu</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Halda vs B-strom porovnání</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Operace</th>
+                            <th>Halda (heap)</th>
+                            <th>B+ strom (index)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Čtení</td>
+                            <td>O(n)</td>
+                            <td>O(log n)</td>
+                        </tr>
+                        <tr>
+                            <td>Vkládání</td>
+                            <td>O(1) nebo O(n)</td>
+                            <td>O(log n)</td>
+                        </tr>
+                        <tr>
+                            <td>Mazání</td>
+                            <td>O(n)</td>
+                            <td>O(log n)</td>
+                        </tr>
+                        <tr>
+                            <td>Bodový dotaz</td>
+                            <td>O(n)</td>
+                            <td>O(log n)</td>
+                        </tr>
+                        <tr>
+                            <td>Rozsahový dotaz</td>
+                            <td>O(n)</td>
+                            <td>O(log n + k)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="rizeni1" class="section">
+                <h2>11 - Řízení souběhu I & II</h2>
+
+                <h3>Problémy souběhu</h3>
+                <p><strong>Souběh</strong> = paralelní vykonávání transakcí (více uživatelů přistupuje k DBS současně)</p>
+
+                <div class="info">
+                    <p>Souběh <strong>snižuje izolaci</strong>, ale <strong>zvyšuje propustnost</strong> systému</p>
+                </div>
+
+                <h4>Typy konfliktů</h4>
+                <ul>
+                    <li><strong>READ-WRITE (RW)</strong></li>
+                    <li><strong>WRITE-READ (WR)</strong></li>
+                    <li><strong>WRITE-WRITE (WW)</strong></li>
+                </ul>
+
+                <h3>Konkrétní problémy souběhu</h3>
+                <div class="warning">
+                    <h4>1. Ztráta aktualizace</h4>
+                    <p>A přečte - B přečte - A zapíše - B zapíše<br>
+                    → Transakce si přepíšou navzájem změny</p>
+                </div>
+
+                <div class="warning">
+                    <h4>2. Nepotvrzená závislost</h4>
+                    <p>B zapíše - A přečte - B rollback<br>
+                    → A pracuje s chybnými hodnotami (špinavé čtení)</p>
+                </div>
+
+                <div class="warning">
+                    <h4>3. Nekonzistentní analýza</h4>
+                    <p>Transakce má k dispozici nekonzistentní databázi</p>
+                </div>
+
+                <div class="warning">
+                    <h4>4. Neopakovatelné čtení</h4>
+                    <p>A čte - B zapíše - A čte<br>
+                    → Opakované čtení vrátí jinou hodnotu</p>
+                </div>
+
+                <div class="warning">
+                    <h4>5. Výskyt fantómů</h4>
+                    <p>A select - B insert - A select<br>
+                    → Opakovaný select vrátí jiný počet záznamů</p>
+                </div>
+
+                <h3>Techniky řízení souběhu</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Technika</th>
+                            <th>Přístup</th>
+                            <th>Princip</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Zamykání</strong></td>
+                            <td>Pesimistický</td>
+                            <td>Jedna kopie dat + zámky</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Správa verzí</strong></td>
+                            <td>Optimistický</td>
+                            <td>Více verzí dat</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Zamykání</h3>
+                <h4>Typy zámků</h4>
+                <ul>
+                    <li><strong>Sdílený (S):</strong> pro čtení (více transakcí může mít současně)</li>
+                    <li><strong>Výlučný (X):</strong> pro zápis (jen jedna transakce)</li>
+                </ul>
+
+                <h4>Pravidla kompatibility</h4>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>A drží</th>
+                            <th>B žádá S</th>
+                            <th>B žádá X</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>S</td>
+                            <td>✅ Povolen</td>
+                            <td>❌ Blokován</td>
+                        </tr>
+                        <tr>
+                            <td>X</td>
+                            <td>❌ Blokován</td>
+                            <td>❌ Blokován</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Přísné dvojfázové zamykání (Strict 2PL)</h3>
+                <ol>
+                    <li><strong>Fáze 1:</strong> Získání zámků</li>
+                    <li><strong>Fáze 2:</strong> Uvolnění zámků (jen při COMMIT/ROLLBACK)</li>
+                </ol>
+
+                <div class="highlight">
+                    <p><strong>Zaručuje serializovatelnost</strong> transakcí</p>
+                </div>
+
+                <h4>Řešení uváznutí (deadlock)</h4>
+                <ul>
+                    <li><strong>Detekce:</strong> časové limity, graf Wait-For</li>
+                    <li><strong>Prevence:</strong> časová razítka (Wait-Die, Wound-Wait)</li>
+                </ul>
+
+                <h3>Úrovně izolace transakcí</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Úroveň</th>
+                            <th>Špinavé čtení</th>
+                            <th>Neopakovatelné čtení</th>
+                            <th>Fantómy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>READ UNCOMMITTED</td>
+                            <td>✅</td>
+                            <td>✅</td>
+                            <td>✅</td>
+                        </tr>
+                        <tr>
+                            <td>READ COMMITTED</td>
+                            <td>❌</td>
+                            <td>✅</td>
+                            <td>✅</td>
+                        </tr>
+                        <tr>
+                            <td>REPEATABLE READ</td>
+                            <td>❌</td>
+                            <td>❌</td>
+                            <td>✅</td>
+                        </tr>
+                        <tr>
+                            <td>SERIALIZABLE</td>
+                            <td>❌</td>
+                            <td>❌</td>
+                            <td>❌</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info">
+                    <p><strong>Kompromis:</strong> Vyšší úroveň izolace = nižší propustnost</p>
+                </div>
+
+                <h3>Správa verzí</h3>
+                <p>Transakce pracují s konzistentními verzemi dat</p>
+
+                <div class="advantages">
+                    <div>
+                        <h4>✅ Výhody verzování</h4>
+                        <ul>
+                            <li>Žádné zámky při čtení</li>
+                            <li>Vyšší paralelizace</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="disadvantages">
+                    <div>
+                        <h4>❌ Nevýhody verzování</h4>
+                        <ul>
+                            <li>Vyšší paměťová náročnost</li>
+                            <li>Konflikty při zápisu</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Implementace v různých DBS</h3>
+                <h4>Oracle</h4>
+                <ul>
+                    <li>READ COMMITTED</li>
+                    <li>READ ONLY</li>
+                    <li>SERIALIZABLE</li>
+                </ul>
+
+                <h4>SQL Server</h4>
+                <ul>
+                    <li>READ UNCOMMITTED</li>
+                    <li>READ COMMITTED</li>
+                    <li>REPEATABLE READ</li>
+                    <li>SERIALIZABLE</li>
+                    <li>SNAPSHOT (vlastní)</li>
+                </ul>
+
+                <h3>Zamykání vs Verzování</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Vlastnost</th>
+                            <th>Zamykání</th>
+                            <th>Verzování</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Přístup</td>
+                            <td>Pesimistický</td>
+                            <td>Optimistický</td>
+                        </tr>
+                        <tr>
+                            <td>Kopie dat</td>
+                            <td>Jedna</td>
+                            <td>Více verzí</td>
+                        </tr>
+                        <tr>
+                            <td>Výhody</td>
+                            <td>Přesná kontrola</td>
+                            <td>Vyšší paralelizace</td>
+                        </tr>
+                        <tr>
+                            <td>Nevýhody</td>
+                            <td>Blokování, uváznutí</td>
+                            <td>Paměť, konflikty při zápisu</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="questions">
+                    <h4>🤔 Otázky k procvičení</h4>
+                    <ol>
+                        <li>Na konkrétním paralelním plánu ukažte problém neopakovatelného čtení</li>
+                        <li>Popište jednotlivé úrovně izolace podle SQL specifikace</li>
+                        <li>Ukažte řešení problému nepotvrzené závislosti</li>
+                        <li>Rozdíl mezi neopakovatelným čtením a výskytem fantómů</li>
+                        <li>Jak zamykání řeší problém ztráty aktualizace?</li>
+                        <li>Paralelní souběžný plán a korektnost</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Back to top functionality
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation to sections when they come into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Initially hide sections for animation
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
